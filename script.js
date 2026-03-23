@@ -11,7 +11,7 @@ function bookNow() {
   }
 
   const msg = `Hello Ashish Doon Travels!%0A%0AI want to book a cab:%0AFrom: ${from}%0ATo: ${to}%0ADate: ${date || 'Flexible'}%0ATrip Type: ${type}%0A%0APlease confirm availability and price.`;
-  window.open(`https://wa.me/919999999999?text=${msg}`, '_blank');
+  window.open(`https://wa.me/919719114237?text=${msg}`, '_blank');
 }
 
 // Contact form - WhatsApp pe
@@ -22,7 +22,7 @@ function submitForm(e) {
   const msg = document.getElementById('cf-msg').value.trim();
 
   const waMsg = `Hello! I'm ${name} (${phone}).%0A%0A${msg}`;
-  window.open(`https://wa.me/919999999999?text=${waMsg}`, '_blank');
+  window.open(`https://wa.me/919719114237?text=${waMsg}`, '_blank');
 }
 
 // Navbar active link highlight on scroll
