@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashish Doon Travels — Travel Safely & Comfortably</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Cormorant+Garamond:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────
+   TOKENS & THEME
+───────────────────────────────────────── */
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-dim: rgba(201,168,76,0.12);
+  --gold-border: rgba(201,168,76,0.18);
+  --bg: #0A0A0A;
+  --bg2: #111111;
+  --bg3: #181818;
+  --surface: #1E1E1E;
+  --surface2: #252525;
+  --text: #F0EBE0;
+  --text2: #9A9590;
+  --text3: #5A5550;
+  --green: #2A6B4F;
+  --green-dim: rgba(42,107,79,0.15);
+  --r: 4px;
+  --r-lg: 8px;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #F5F1EB; --bg2: #EDE9E2; --bg3: #E3DDD6;
+    --surface: #FFFFFF; --surface2: #F7F4EF;
+    --text: #1A1510; --text2: #6B6560; --text3: #A8A49E;
+  }
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; }
+::-webkit-scrollbar { width:3px; } ::-webkit-scrollbar-track { background:var(--bg); } ::-webkit-scrollbar-thumb { background:var(--gold); }
+img { display:block; max-width:100%; }
+button { font-family:'DM Sans',sans-serif; cursor:pointer; }
+a { text-decoration:none; }
+
+/* ─────────────────────────────────────────
+   NAV
+───────────────────────────────────────── */
+#nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:22px 56px;
+  transition:all 0.4s;
+}
+#nav.stuck {
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--gold-border);
+  padding:14px 56px;
+}
+.nav-brand { display:flex; flex-direction:column; line-height:1.1; }
+.nav-brand .name { font-family:'Playfair Display',serif; font-size:20px; color:var(--gold); }
+.nav-brand .sub { font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:var(--text3); margin-top:2px; }
+.nav-links { display:flex; gap:32px; }
+.nav-links a { font-size:12px; font-weight:400; letter-spacing:.08em; text-transform:uppercase; color:var(--text2); transition:color .3s; position:relative; padding-bottom:4px; }
+.nav-links a::after { content:''; position:absolute; bottom:0; left:0; right:0; height:1px; background:var(--gold); transform:scaleX(0); transition:transform .3s; }
+.nav-links a:hover { color:var(--text); } .nav-links a:hover::after { transform:scaleX(1); }
+.nav-actions { display:flex; gap:10px; align-items:center; }
+.btn-ghost { background:transparent; border:1px solid var(--gold-border); color:var(--text2); padding:9px 20px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; border-radius:var(--r); transition:all .3s; }
+.btn-ghost:hover { border-color:var(--gold); color:var(--gold); }
+.btn-gold { background:var(--gold); border:none; color:var(--bg); padding:9px 22px; font-size:12px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; border-radius:var(--r); transition:all .3s; }
+.btn-gold:hover { background:var(--gold-light); transform:translateY(-1px); box-shadow:0 6px 20px rgba(201,168,76,.35); }
+
+/* ─────────────────────────────────────────
+   HERO
+───────────────────────────────────────── */
+#hero {
+  min-height:100vh; position:relative; display:flex; align-items:center; justify-content:center;
+  text-align:center; overflow:hidden; padding:120px 24px 80px;
+}
+.hero-orb1 { position:absolute; width:700px; height:700px; border-radius:50%; background:radial-gradient(circle,rgba(42,107,79,.18) 0%,transparent 65%); top:-100px; left:-200px; pointer-events:none; }
+.hero-orb2 { position:absolute; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle,rgba(201,168,76,.1) 0%,transparent 65%); bottom:-50px; right:-100px; pointer-events:none; }
+.hero-grid-bg {
+  position:absolute; inset:0; pointer-events:none;
+  background-image:linear-gradient(rgba(201,168,76,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.05) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 75% 75% at 50% 50%,black,transparent);
+}
+.hero-inner { position:relative; z-index:2; max-width:880px; }
+.hero-pill {
+  display:inline-flex; align-items:center; gap:10px; padding:6px 20px;
+  background:var(--gold-dim); border:1px solid var(--gold-border);
+  border-radius:999px; font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:32px;
+  opacity:0; animation:riseUp .8s .15s forwards;
+}
+.hero-pill-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+.hero-h1 {
+  font-family:'Playfair Display',serif; font-size:clamp(52px,9vw,104px);
+  font-weight:400; line-height:1.02; letter-spacing:-.01em;
+  opacity:0; animation:riseUp .9s .3s forwards;
+}
+.hero-h1 em { font-style:italic; color:var(--gold); }
+.hero-byline {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:clamp(16px,2.5vw,22px); color:var(--text2);
+  margin:20px 0 44px; letter-spacing:.03em;
+  opacity:0; animation:riseUp .9s .5s forwards;
+}
+.hero-actions { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; opacity:0; animation:riseUp .9s .7s forwards; }
+.hero-scroll { position:absolute; bottom:36px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--text3); font-size:11px; letter-spacing:.15em; text-transform:uppercase; }
+.scroll-line { width:1px; height:48px; background:linear-gradient(to bottom,var(--gold),transparent); animation:scrollPulse 2s infinite; }
+@keyframes scrollPulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+@keyframes riseUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+/* ─────────────────────────────────────────
+   CALL STRIP
+───────────────────────────────────────── */
+.call-strip { background:var(--gold); padding:14px 56px; display:flex; align-items:center; justify-content:center; gap:28px; flex-wrap:wrap; }
+.call-strip p { color:var(--bg); font-size:14px; font-weight:400; }
+.call-strip .num { font-family:'Playfair Display',serif; font-size:22px; color:var(--bg); font-weight:700; }
+.btn-dark { background:var(--bg); color:var(--gold); border:none; padding:9px 22px; font-size:12px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; border-radius:var(--r); transition:all .3s; }
+.btn-dark:hover { background:var(--bg2); }
+
+/* ─────────────────────────────────────────
+   MARQUEE
+───────────────────────────────────────── */
+.marquee-wrap { overflow:hidden; border-top:1px solid var(--gold-border); border-bottom:1px solid var(--gold-border); padding:18px 0; background:color-mix(in srgb,var(--gold) 3%,transparent); }
+.marquee-track { display:flex; gap:48px; width:max-content; animation:scroll 22s linear infinite; }
+.marquee-wrap:hover .marquee-track { animation-play-state:paused; }
+.marquee-item { display:flex; align-items:center; gap:14px; font-family:'Playfair Display',serif; font-size:17px; color:var(--text2); white-space:nowrap; transition:color .3s; cursor:default; }
+.marquee-item:hover { color:var(--gold); }
+.m-dot { width:4px; height:4px; border-radius:50%; background:var(--gold); opacity:.5; }
+@keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ─────────────────────────────────────────
+   SECTION COMMON
+───────────────────────────────────────── */
+.section { padding:96px 56px; }
+.section-alt { background:var(--bg2); }
+.sec-label { font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; display:block; }
+.sec-h2 { font-family:'Playfair Display',serif; font-size:clamp(30px,5vw,52px); font-weight:400; line-height:1.1; }
+.sec-h2 em { font-style:italic; color:var(--gold); }
+.sec-head { margin-bottom:56px; }
+
+/* reveal */
+.reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+.reveal.in { opacity:1; transform:none; }
+.d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s}
+
+/* ─────────────────────────────────────────
+   STATS
+───────────────────────────────────────── */
+.stats-grid { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--gold-border); }
+.stat { padding:36px 28px; text-align:center; border-right:1px solid var(--gold-border); }
+.stat:last-child { border-right:none; }
+.stat-n { font-family:'Playfair Display',serif; font-size:52px; color:var(--gold); line-height:1; }
+.stat-l { font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--text2); margin-top:8px; }
+
+/* ─────────────────────────────────────────
+   DESTINATIONS GRID
+───────────────────────────────────────── */
+.dest-grid {
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  grid-template-rows:320px 240px;
+  gap:10px;
+}
+.dest-card {
+  position:relative; border-radius:var(--r-lg); overflow:hidden;
+  cursor:pointer; transition:transform .3s;
+}
+.dest-card:first-child { grid-row:span 2; }
+.dest-card:hover { transform:scale(1.015); z-index:2; }
+.dest-bg { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:88px; transition:transform .6s cubic-bezier(.25,.46,.45,.94); }
+.dest-card:hover .dest-bg { transform:scale(1.1); }
+.dest-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.88) 0%,rgba(0,0,0,.1) 60%); transition:opacity .4s; }
+.dest-card:hover .dest-overlay { background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(42,107,79,.18) 100%); }
+.dest-info { position:absolute; bottom:0; left:0; right:0; padding:24px 22px; }
+.dest-info h3 { font-family:'Playfair Display',serif; font-size:22px; font-weight:400; margin-bottom:5px; }
+.dest-card:first-child .dest-info h3 { font-size:34px; }
+.dest-info p { font-size:12px; color:rgba(240,235,224,.65); margin-bottom:14px; }
+.dest-row { display:flex; justify-content:space-between; align-items:center; }
+.dest-price { font-size:13px; color:var(--gold); }
+.dest-explore {
+  background:rgba(255,255,255,.1); backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.2); color:#fff;
+  padding:7px 16px; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  border-radius:var(--r); transition:all .3s;
+  opacity:0; transform:translateY(6px);
+}
+.dest-card:hover .dest-explore { opacity:1; transform:none; }
+.dest-explore:hover { background:var(--gold); border-color:var(--gold); color:var(--bg); }
+
+.bg-doon   { background:linear-gradient(135deg,#0d2b1a,#1a4a2a,#0f3520); }
+.bg-muss   { background:linear-gradient(135deg,#0d1a2b,#1a2f4a,#0d2035); }
+.bg-hari   { background:linear-gradient(135deg,#2b1a0d,#4a2a10,#351808); }
+.bg-rish   { background:linear-gradient(135deg,#0d2b1a,#15402a,#0d2b20); }
+.bg-chak   { background:linear-gradient(135deg,#151520,#202040,#181832); }
+
+/* ─────────────────────────────────────────
+   SERVICES
+───────────────────────────────────────── */
+.svc-grid { display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--gold-border); }
+.svc { padding:36px 30px; border-right:1px solid var(--gold-border); border-bottom:1px solid var(--gold-border); position:relative; overflow:hidden; transition:background .3s; cursor:default; }
+.svc::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--gold); transform:scaleX(0); transition:transform .4s; }
+.svc:hover { background:var(--gold-dim); } .svc:hover::after { transform:scaleX(1); }
+.svc-ico { font-size:28px; margin-bottom:18px; }
+.svc h3 { font-family:'Playfair Display',serif; font-size:18px; font-weight:400; margin-bottom:10px; }
+.svc p { font-size:13px; color:var(--text2); line-height:1.75; }
+
+/* ─────────────────────────────────────────
+   PACKAGES
+───────────────────────────────────────── */
+.pkg-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.pkg {
+  background:var(--bg2); border:1px solid var(--gold-border);
+  border-radius:var(--r-lg); overflow:hidden; transition:all .4s; position:relative;
+}
+.pkg.hot { border-color:var(--gold); transform:translateY(-10px); }
+.pkg:hover { transform:translateY(-5px); } .pkg.hot:hover { transform:translateY(-14px); }
+.pkg-hot-badge { position:absolute; top:14px; right:14px; background:var(--gold); color:var(--bg); font-size:10px; font-weight:500; padding:4px 10px; letter-spacing:.1em; text-transform:uppercase; border-radius:var(--r); }
+.pkg-thumb { height:170px; display:flex; align-items:center; justify-content:center; font-size:60px; }
+.pkg-body { padding:22px; }
+.pkg-dur { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:7px; display:block; }
+.pkg-body h3 { font-family:'Playfair Display',serif; font-size:20px; font-weight:400; margin-bottom:10px; }
+.pkg-body p { font-size:13px; color:var(--text2); line-height:1.7; margin-bottom:18px; }
+.pkg-tags { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:20px; }
+.ptag { font-size:11px; padding:4px 10px; background:var(--green-dim); color:color-mix(in srgb,var(--gold-light) 70%,var(--text)); border-radius:var(--r); }
+.pkg-foot { display:flex; justify-content:space-between; align-items:center; padding-top:18px; border-top:1px solid var(--gold-border); }
+.pkg-price { font-family:'Playfair Display',serif; font-size:26px; }
+.pkg-price small { font-family:'DM Sans',sans-serif; font-size:12px; color:var(--text2); }
+
+/* ─────────────────────────────────────────
+   BOOKING SECTION
+───────────────────────────────────────── */
+#booking { padding:96px 56px; position:relative; overflow:hidden; }
+#booking::before { content:''; position:absolute; top:-150px; right:-150px; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(201,168,76,.07),transparent 65%); pointer-events:none; }
+.booking-wrap { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start; }
+.bk-left h2 { font-family:'Playfair Display',serif; font-size:clamp(28px,4vw,46px); font-weight:400; line-height:1.15; margin-bottom:22px; }
+.bk-left h2 em { font-style:italic; color:var(--gold); }
+.bk-left > p { font-size:14px; color:var(--text2); line-height:1.85; margin-bottom:36px; }
+.trust-list { display:flex; flex-direction:column; gap:18px; }
+.trust { display:flex; align-items:flex-start; gap:16px; }
+.trust-ico { width:38px; height:38px; border-radius:50%; background:var(--gold-dim); border:1px solid var(--gold-border); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; margin-top:2px; }
+.trust-txt strong { display:block; font-size:14px; font-weight:500; margin-bottom:3px; }
+.trust-txt span { font-size:13px; color:var(--text2); }
+.bk-form { background:var(--surface); border:1px solid var(--gold-border); border-radius:var(--r-lg); padding:40px; }
+.form-head { font-family:'Playfair Display',serif; font-size:22px; font-weight:400; text-align:center; margin-bottom:30px; }
+.form-head em { font-style:italic; color:var(--gold); }
+.f-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.fg { display:flex; flex-direction:column; gap:7px; margin-bottom:14px; }
+.fg label { font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--text2); }
+.fg input, .fg select, .fg textarea {
+  background:var(--bg2); border:1px solid var(--gold-border); color:var(--text);
+  padding:12px 14px; font-family:'DM Sans',sans-serif; font-size:14px;
+  border-radius:var(--r); outline:none; transition:border-color .3s; width:100%;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus { border-color:var(--gold); }
+.fg input::placeholder,.fg textarea::placeholder { color:var(--text3); }
+.fg select option { background:var(--bg2); }
+.fg textarea { resize:none; height:76px; }
+.submit { width:100%; padding:15px; background:var(--gold); color:var(--bg); border:none; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; border-radius:var(--r); transition:all .3s; margin-top:6px; }
+.submit:hover { background:var(--gold-light); transform:translateY(-2px); box-shadow:0 8px 24px rgba(201,168,76,.35); }
+.submit:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer { padding:72px 56px 40px; border-top:1px solid var(--gold-border); }
+.ft-grid { display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:48px; margin-bottom:48px; }
+.ft-col h4 { font-family:'Playfair Display',serif; font-size:16px; font-weight:400; color:var(--gold); margin-bottom:18px; }
+.ft-col p,.ft-col a { font-size:13px; color:var(--text2); line-height:2.2; display:block; transition:color .3s; }
+.ft-col a:hover { color:var(--gold); }
+.ft-bottom { display:flex; justify-content:space-between; align-items:center; padding-top:24px; border-top:1px solid var(--gold-border); }
+.ft-logo { font-family:'Playfair Display',serif; font-size:18px; color:var(--gold); }
+.ft-copy { font-size:12px; color:var(--text3); }
+
+/* ─────────────────────────────────────────
+   DESTINATION MODAL
+───────────────────────────────────────── */
+.modal-backdrop {
+  position:fixed; inset:0; z-index:500;
+  background:rgba(0,0,0,.85); backdrop-filter:blur(12px);
+  display:flex; align-items:flex-start; justify-content:center;
+  padding:40px 24px; overflow-y:auto;
+  opacity:0; visibility:hidden; transition:all .35s;
+}
+.modal-backdrop.open { opacity:1; visibility:visible; }
+.modal {
+  width:100%; max-width:900px; background:var(--bg2);
+  border:1px solid var(--gold-border); border-radius:12px;
+  overflow:hidden;
+  transform:translateY(32px) scale(.97);
+  transition:transform .35s cubic-bezier(.25,.46,.45,.94);
+}
+.modal-backdrop.open .modal { transform:none; }
+.modal-hero { padding:48px 40px 36px; position:relative; overflow:hidden; }
+.modal-hero::before { content:''; position:absolute; inset:0; opacity:.5; }
+.modal-close { position:absolute; top:20px; right:20px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:#fff; width:36px; height:36px; border-radius:50%; font-size:18px; display:flex; align-items:center; justify-content:center; transition:all .3s; }
+.modal-close:hover { background:var(--gold); border-color:var(--gold); color:var(--bg); }
+.modal-emoji { font-size:64px; margin-bottom:16px; }
+.modal-title { font-family:'Playfair Display',serif; font-size:40px; font-weight:400; color:#fff; margin-bottom:8px; }
+.modal-tagline { font-size:15px; color:rgba(255,255,255,.6); margin-bottom:24px; }
+.modal-meta { display:flex; gap:24px; flex-wrap:wrap; }
+.meta-chip { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); padding:7px 14px; border-radius:999px; font-size:12px; color:rgba(255,255,255,.8); }
+.modal-body { padding:36px 40px; }
+.modal-section-title { font-family:'Playfair Display',serif; font-size:22px; font-weight:400; margin-bottom:24px; }
+.modal-section-title em { font-style:italic; color:var(--gold); }
+.places-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:48px; }
+.place-card { background:var(--surface); border:1px solid var(--gold-border); border-radius:var(--r-lg); padding:20px; transition:border-color .3s; }
+.place-card:hover { border-color:var(--gold); }
+.place-card.must-visit { border-left:3px solid var(--gold); }
+.place-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+.place-name { font-family:'Playfair Display',serif; font-size:16px; font-weight:400; }
+.place-type { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--text2); background:var(--gold-dim); padding:3px 9px; border-radius:999px; }
+.place-desc { font-size:13px; color:var(--text2); line-height:1.7; margin-bottom:14px; }
+.place-info { display:flex; gap:16px; }
+.pinfo { font-size:11px; color:var(--text3); }
+.pinfo span { color:var(--text2); }
+.must-badge { font-size:10px; background:var(--gold); color:var(--bg); padding:2px 8px; border-radius:999px; font-weight:500; margin-left:8px; }
+.modal-pkgs { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:32px; }
+.modal-pkg { background:var(--surface); border:1px solid var(--gold-border); border-radius:var(--r-lg); padding:20px; text-align:center; transition:all .3s; }
+.modal-pkg:hover { border-color:var(--gold); transform:translateY(-3px); }
+.mp-dur { font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+.mp-name { font-family:'Playfair Display',serif; font-size:16px; margin-bottom:12px; }
+.mp-tags { display:flex; flex-wrap:wrap; gap:5px; justify-content:center; margin-bottom:16px; }
+.mp-tag { font-size:10px; background:var(--green-dim); color:var(--text2); padding:3px 8px; border-radius:var(--r); }
+.mp-price { font-family:'Playfair Display',serif; font-size:26px; color:var(--gold); margin-bottom:16px; }
+.btn-book-pkg { width:100%; background:var(--gold); color:var(--bg); border:none; padding:10px; font-size:12px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; border-radius:var(--r); transition:all .3s; }
+.btn-book-pkg:hover { background:var(--gold-light); }
+
+/* ─────────────────────────────────────────
+   TOAST
+───────────────────────────────────────── */
+.toast {
+  position:fixed; bottom:32px; right:32px; z-index:999;
+  background:var(--surface); border:1px solid var(--gold); border-left:4px solid var(--gold);
+  border-radius:var(--r-lg); padding:18px 24px; max-width:320px;
+  transform:translateX(130%); transition:transform .4s cubic-bezier(.25,.46,.45,.94);
+  pointer-events:none;
+}
+.toast.show { transform:none; pointer-events:auto; }
+.toast-title { font-weight:500; color:var(--gold); font-size:14px; margin-bottom:4px; }
+.toast-msg { font-size:13px; color:var(--text2); line-height:1.5; }
+
+/* ─────────────────────────────────────────
+   LOADER (API state)
+───────────────────────────────────────── */
+.spinner { display:inline-block; width:20px; height:20px; border:2px solid var(--gold-border); border-top-color:var(--gold); border-radius:50%; animation:spin .7s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media(max-width:900px) {
+  #nav { padding:16px 24px; } #nav.stuck { padding:12px 24px; }
+  .nav-links { display:none; }
+  .section,.call-strip,.ft-grid,.booking-wrap { padding-left:24px; padding-right:24px; }
+  .dest-grid { grid-template-columns:1fr 1fr; grid-template-rows:auto; }
+  .dest-card:first-child { grid-column:span 2; grid-row:auto; height:280px; }
+  .svc-grid,.pkg-grid { grid-template-columns:1fr; }
+  .booking-wrap { grid-template-columns:1fr; }
+  .stats-grid { grid-template-columns:repeat(2,1fr); }
+  .ft-grid { grid-template-columns:1fr 1fr; }
+  .places-grid,.modal-pkgs { grid-template-columns:1fr; }
+  .modal-body { padding:24px; }
+  .modal-hero { padding:32px 24px 24px; }
+  .f-row { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><div class="toast-title" id="toast-title"></div><div class="toast-msg" id="toast-msg"></div></div>
+
+<!-- DESTINATION MODAL -->
+<div class="modal-backdrop" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-hero" id="modal-hero">
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+      <div class="modal-emoji" id="modal-emoji"></div>
+      <h2 class="modal-title" id="modal-name"></h2>
+      <p class="modal-tagline" id="modal-tagline"></p>
+      <div class="modal-meta" id="modal-meta"></div>
+    </div>
+    <div class="modal-body" id="modal-content">
+      <div style="text-align:center;padding:40px"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <div class="nav-brand">
+    <span class="name">Ashish Doon Travels</span>
+    <span class="sub">Dehradun, Uttarakhand</span>
+  </div>
+  <div class="nav-links">
+    <a href="#hero">Home</a>
+    <a href="#destinations">Destinations</a>
+    <a href="#services">Services</a>
+    <a href="#packages">Packages</a>
+    <a href="#booking">Book Now</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-ghost" onclick="window.location='tel:+919719114237'">📞 Call</button>
+    <button class="btn-gold" onclick="scrollTo('booking')">Quick Booking</button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-orb1"></div><div class="hero-orb2"></div>
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-pill"><span class="hero-pill-dot"></span>Travel Safely &amp; Comfortably</div>
+    <h1 class="hero-h1">Explore the<br><em>Himalayan Soul</em></h1>
+    <p class="hero-byline">Dehradun · Mussoorie · Haridwar · Rishikesh · Chakrata</p>
+    <div class="hero-actions">
+      <button class="btn-gold" onclick="scrollTo('booking')">Quick Booking</button>
+      <button class="btn-ghost" onclick="scrollTo('destinations')">Explore Destinations</button>
+      <button class="btn-ghost" onclick="openDestModal('dehradun')">📍 Dehradun</button>
+      <button class="btn-ghost" onclick="openDestModal('mussoorie')">🏔 Mussoorie</button>
+      <button class="btn-ghost" onclick="openDestModal('haridwar')">🔱 Haridwar</button>
+      <button class="btn-ghost" onclick="openDestModal('rishikesh')">🌊 Rishikesh</button>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- ═══ CALL STRIP ═══ -->
+<div class="call-strip">
+  <p>Ready to travel? We're available 24/7 —</p>
+  <span class="num">+91 97191 14237</span>
+  <button class="btn-dark" onclick="toast('Calling You!','Our agent will call you in 2 minutes.')">Call Now ↗</button>
+</div>
+
+<!-- ═══ MARQUEE ═══ -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="m-dot"></span>Robber's Cave, Dehradun</span>
+    <span class="marquee-item"><span class="m-dot"></span>Mall Road, Mussoorie</span>
+    <span class="marquee-item"><span class="m-dot"></span>Har Ki Pauri, Haridwar</span>
+    <span class="marquee-item"><span class="m-dot"></span>Laxman Jhula, Rishikesh</span>
+    <span class="marquee-item"><span class="m-dot"></span>Kempty Falls</span>
+    <span class="marquee-item"><span class="m-dot"></span>Tiger Falls, Chakrata</span>
+    <span class="marquee-item"><span class="m-dot"></span>Ganga Aarti, Haridwar</span>
+    <span class="marquee-item"><span class="m-dot"></span>River Rafting, Rishikesh</span>
+    <span class="marquee-item"><span class="m-dot"></span>George Everest Peak</span>
+    <span class="marquee-item"><span class="m-dot"></span>Forest Research Institute</span>
+    <span class="marquee-item"><span class="m-dot"></span>Robber's Cave, Dehradun</span>
+    <span class="marquee-item"><span class="m-dot"></span>Mall Road, Mussoorie</span>
+    <span class="marquee-item"><span class="m-dot"></span>Har Ki Pauri, Haridwar</span>
+    <span class="marquee-item"><span class="m-dot"></span>Laxman Jhula, Rishikesh</span>
+    <span class="marquee-item"><span class="m-dot"></span>Kempty Falls</span>
+    <span class="marquee-item"><span class="m-dot"></span>Tiger Falls, Chakrata</span>
+    <span class="marquee-item"><span class="m-dot"></span>Ganga Aarti, Haridwar</span>
+    <span class="marquee-item"><span class="m-dot"></span>River Rafting, Rishikesh</span>
+    <span class="marquee-item"><span class="m-dot"></span>George Everest Peak</span>
+    <span class="marquee-item"><span class="m-dot"></span>Forest Research Institute</span>
+  </div>
+</div>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats-grid reveal" id="stats">
+  <div class="stat"><div class="stat-n" data-t="12000">0</div><div class="stat-l">Happy Travellers</div></div>
+  <div class="stat"><div class="stat-n" data-t="25">0</div><div class="stat-l">Years of Experience</div></div>
+  <div class="stat"><div class="stat-n" data-t="48">0</div><div class="stat-l">Curated Routes</div></div>
+  <div class="stat"><div class="stat-n" data-t="98">0</div><div class="stat-l">% Satisfaction</div></div>
+</div>
+
+<!-- ═══ DESTINATIONS ═══ -->
+<section id="destinations" class="section">
+  <div class="sec-head reveal">
+    <span class="sec-label">Click any destination to explore</span>
+    <h2 class="sec-h2">Famous <em>Destinations</em><br>of Uttarakhand</h2>
+  </div>
+  <div class="dest-grid reveal d1">
+    <div class="dest-card" onclick="openDestModal('dehradun')">
+      <div class="dest-bg bg-doon">🌿</div>
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <h3>Dehradun</h3>
+        <p>Valley of the Doons — Where the Himalayas begin</p>
+        <div class="dest-row">
+          <span class="dest-price">From ₹1,499</span>
+          <button class="dest-explore">Explore All Places →</button>
+        </div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="openDestModal('mussoorie')">
+      <div class="dest-bg bg-muss">🏔</div>
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <h3>Mussoorie</h3>
+        <p>Queen of the Hills</p>
+        <div class="dest-row">
+          <span class="dest-price">From ₹1,999</span>
+          <button class="dest-explore">Explore →</button>
+        </div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="openDestModal('haridwar')">
+      <div class="dest-bg bg-hari">🔱</div>
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <h3>Haridwar</h3>
+        <p>Gateway to the Gods</p>
+        <div class="dest-row">
+          <span class="dest-price">From ₹1,499</span>
+          <button class="dest-explore">Explore →</button>
+        </div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="openDestModal('rishikesh')">
+      <div class="dest-bg bg-rish">🌊</div>
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <h3>Rishikesh</h3>
+        <p>Yoga Capital of the World</p>
+        <div class="dest-row">
+          <span class="dest-price">From ₹2,499</span>
+          <button class="dest-explore">Explore →</button>
+        </div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="openDestModal('chakrata')">
+      <div class="dest-bg bg-chak">⛰</div>
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <h3>Chakrata</h3>
+        <p>Hidden gem of Garhwal hills</p>
+        <div class="dest-row">
+          <span class="dest-price">From ₹2,999</span>
+          <button class="dest-explore">Explore →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="services" class="section section-alt">
+  <div class="sec-head reveal">
+    <span class="sec-label">What we offer</span>
+    <h2 class="sec-h2">Travel <em>Safely</em> &amp;<br>Comfortably</h2>
+  </div>
+  <div class="svc-grid reveal d1">
+    <div class="svc"><div class="svc-ico">🚗</div><h3>Cab & Taxi Service</h3><p>AC vehicles, experienced drivers, 24/7 availability across Dehradun and all hill routes.</p></div>
+    <div class="svc"><div class="svc-ico">🏨</div><h3>Hotel Booking</h3><p>Budget guesthouses to luxury mountain resorts — all personally vetted by our team.</p></div>
+    <div class="svc"><div class="svc-ico">🗺</div><h3>Custom Tour Packages</h3><p>Tailored itineraries for your timeline, budget, and travel style. Families, couples, groups.</p></div>
+    <div class="svc"><div class="svc-ico">🛕</div><h3>Char Dham Yatra</h3><p>Badrinath, Kedarnath, Gangotri, Yamunotri — complete pilgrimage with all arrangements.</p></div>
+    <div class="svc"><div class="svc-ico">🏕</div><h3>Adventure Tours</h3><p>Camping, trekking, rafting, bungee — Garhwal Himalayas at its most thrilling.</p></div>
+    <div class="svc"><div class="svc-ico">📋</div><h3>Corporate Travel</h3><p>End-to-end corporate travel management. Offsites, retreats, business travel made easy.</p></div>
+  </div>
+</section>
+
+<!-- ═══ PACKAGES ═══ -->
+<section id="packages" class="section">
+  <div class="sec-head reveal">
+    <span class="sec-label">Best picks for you</span>
+    <h2 class="sec-h2">Choose Your <em>Package</em></h2>
+  </div>
+  <div class="pkg-grid reveal d1">
+    <div class="pkg">
+      <div class="pkg-thumb bg-muss">🏔</div>
+      <div class="pkg-body">
+        <span class="pkg-dur">3 Days · 2 Nights</span>
+        <h3>Mussoorie Weekend Escape</h3>
+        <p>Mall Road, Kempty Falls, Cloud's End, Landour — perfect short hill break from Dehradun.</p>
+        <div class="pkg-tags"><span class="ptag">Hotel</span><span class="ptag">AC Cab</span><span class="ptag">Breakfast</span></div>
+        <div class="pkg-foot">
+          <div class="pkg-price">₹4,999 <small>/ person</small></div>
+          <button class="btn-gold" onclick="prefillBooking('Mussoorie Weekend Escape')">Book Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="pkg hot">
+      <span class="pkg-hot-badge">Most Popular</span>
+      <div class="pkg-thumb bg-hari">🔱</div>
+      <div class="pkg-body">
+        <span class="pkg-dur">5 Days · 4 Nights</span>
+        <h3>Haridwar–Rishikesh Spiritual Tour</h3>
+        <p>Ganga Aarti, Laxman Jhula, ashrams, rafting, yoga — sacred and adventurous both.</p>
+        <div class="pkg-tags"><span class="ptag">Hotel</span><span class="ptag">AC Cab</span><span class="ptag">All Meals</span><span class="ptag">Guide</span></div>
+        <div class="pkg-foot">
+          <div class="pkg-price">₹8,499 <small>/ person</small></div>
+          <button class="btn-gold" onclick="prefillBooking('Haridwar–Rishikesh Spiritual Tour')">Book Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="pkg">
+      <div class="pkg-thumb bg-chak">⛰</div>
+      <div class="pkg-body">
+        <span class="pkg-dur">7 Days · 6 Nights</span>
+        <h3>Complete Doon Valley Explorer</h3>
+        <p>Dehradun, Mussoorie, Chakrata, Haridwar, Rishikesh — the ultimate Uttarakhand road trip.</p>
+        <div class="pkg-tags"><span class="ptag">Hotels</span><span class="ptag">AC Cab</span><span class="ptag">All Meals</span><span class="ptag">Insurance</span></div>
+        <div class="pkg-foot">
+          <div class="pkg-price">₹14,999 <small>/ person</small></div>
+          <button class="btn-gold" onclick="prefillBooking('Complete Doon Valley Explorer')">Book Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BOOKING ═══ -->
+<section id="booking" class="section section-alt">
+  <div class="booking-wrap">
+    <div class="bk-left reveal">
+      <h2>Quick <em>Booking</em><br>— We Call You Back</h2>
+      <p>Fill your details, choose a destination, and our travel expert calls you within 30 minutes to confirm your trip. No advance payment needed.</p>
+      <div class="trust-list">
+        <div class="trust"><div class="trust-ico">✓</div><div class="trust-txt"><strong>No advance payment</strong><span>Pay only when 100% satisfied with the plan</span></div></div>
+        <div class="trust"><div class="trust-ico">📞</div><div class="trust-txt"><strong>30-minute callback</strong><span>Real human — we pick up every call</span></div></div>
+        <div class="trust"><div class="trust-ico">🛡</div><div class="trust-txt"><strong>Free travel insurance</strong><span>Included with every package above ₹5,000</span></div></div>
+        <div class="trust"><div class="trust-ico">↩</div><div class="trust-txt"><strong>Free cancellation</strong><span>Cancel 48hr before departure, no questions asked</span></div></div>
+      </div>
+    </div>
+    <div class="bk-form reveal d2">
+      <div class="form-head">Book Your <em>Journey</em></div>
+      <div class="f-row">
+        <div class="fg"><label>Your Name</label><input type="text" id="b-name" placeholder="Rahul Sharma" /></div>
+        <div class="fg"><label>Phone Number</label><input type="tel" id="b-phone" placeholder="+91 97191 14237" /></div>
+      </div>
+      <div class="fg"><label>Email Address</label><input type="email" id="b-email" placeholder="rahul@gmail.com" /></div>
+      <div class="fg"><label>Destination</label>
+        <select id="b-dest">
+          <option value="">Select destination...</option>
+          <option>Dehradun</option><option>Mussoorie</option><option>Haridwar</option>
+          <option>Rishikesh</option><option>Chakrata</option>
+          <option>Haridwar–Rishikesh Spiritual Tour</option>
+          <option>Mussoorie Weekend Escape</option>
+          <option>Complete Doon Valley Explorer</option>
+          <option>Char Dham Yatra</option><option>Custom Package</option>
+        </select>
+      </div>
+      <div class="f-row">
+        <div class="fg"><label>Travel Date</label><input type="date" id="b-date" /></div>
+        <div class="fg"><label>Travellers</label>
+          <select id="b-guests">
+            <option>1 person</option><option>2 persons</option>
+            <option>3–5 persons</option><option>6–10 persons</option><option>10+ persons</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>Special Requests</label><textarea id="b-msg" placeholder="AC vehicle, specific hotel, dietary needs, anything..."></textarea></div>
+      <button class="submit" id="submit-btn" onclick="submitBooking()">Confirm My Booking →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="contact">
+  <div class="ft-grid reveal">
+    <div class="ft-col">
+      <h4>Ashish Doon Travels</h4>
+      <p>Serving travellers across Uttarakhand with heart, honesty, and years of expertise.</p>
+    </div>
+    <div class="ft-col">
+      <h4>Quick Links</h4>
+      <a href="#hero">Home</a><a href="#destinations">Destinations</a>
+      <a href="#services">Services</a><a href="#packages">Packages</a>
+      <a href="#booking">Book Now</a>
+    </div>
+    <div class="ft-col">
+      <h4>Popular Routes</h4>
+      <a href="#" onclick="openDestModal('dehradun')">Dehradun Sightseeing</a>
+      <a href="#" onclick="openDestModal('mussoorie')">Doon → Mussoorie</a>
+      <a href="#" onclick="openDestModal('haridwar')">Doon → Haridwar</a>
+      <a href="#" onclick="openDestModal('rishikesh')">Doon → Rishikesh</a>
+      <a href="#" onclick="openDestModal('chakrata')">Doon → Chakrata</a>
+    </div>
+    <div class="ft-col">
+      <h4>Contact Us</h4>
+      <p>📍 Rajpur Road, Dehradun</p>
+      <p>📞 +91 97191 14237</p>
+      <p>✉ <a href="mailto:info@ashishdoontravels.com">info@ashishdoontravels.com</a></p>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span class="ft-logo">Ashish Doon Travels</span>
+    <span class="ft-copy">© 2026 · Travel Safely &amp; Comfortably · Dehradun, Uttarakhand</span>
+  </div>
+</footer>
+
+<script>
+// ── CONFIG ──
+// When running locally: const API = 'http://localhost:3000/api'
+// When deployed:        const API = '/api'
+const API = '/api';
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('stuck', window.scrollY > 60);
+});
+
+// ── REVEAL ──
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ── COUNTER ──
+function runCounter(el) {
+  const t = parseInt(el.dataset.t);
+  const dur = 2000, step = t / (dur / 16);
+  let cur = 0;
+  const id = setInterval(() => {
+    cur = Math.min(cur + step, t);
+    el.textContent = Math.floor(cur).toLocaleString('en-IN');
+    if (cur >= t) {
+      el.textContent = t.toLocaleString('en-IN') + (el.dataset.t === '98' ? '%+' : '+');
+      clearInterval(id);
+    }
+  }, 16);
+}
+const co = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('[data-t]').forEach(runCounter);
+      co.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.4 });
+document.querySelectorAll('#stats').forEach(el => co.observe(el));
+
+// ── TOAST ──
+let toastTimer;
+function toast(title, msg) {
+  const el = document.getElementById('toast');
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-msg').textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 5000);
+}
+
+// ── SCROLL HELPER ──
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── PREFILL BOOKING ──
+function prefillBooking(pkg) {
+  document.getElementById('b-dest').value = pkg;
+  scrollTo('booking');
+  setTimeout(() => document.getElementById('b-name').focus(), 600);
+}
+
+// ── DESTINATION MODAL ──
+const modalColors = {
+  dehradun: 'linear-gradient(135deg,#0d2b1a,#1a4a2a)',
+  mussoorie: 'linear-gradient(135deg,#0d1a2b,#1a2f4a)',
+  haridwar: 'linear-gradient(135deg,#2b1a0d,#4a2a10)',
+  rishikesh: 'linear-gradient(135deg,#0d2b1a,#15402a)',
+  chakrata: 'linear-gradient(135deg,#151520,#202040)'
+};
+
+async function openDestModal(id) {
+  // Show modal with loader
+  const backdrop = document.getElementById('modal');
+  document.getElementById('modal-content').innerHTML = '<div style="text-align:center;padding:60px"><div class="spinner"></div><p style="margin-top:16px;color:var(--text2);font-size:13px">Loading destination...</p></div>';
+  document.getElementById('modal-emoji').textContent = '';
+  document.getElementById('modal-name').textContent = '';
+  document.getElementById('modal-tagline').textContent = '';
+  document.getElementById('modal-meta').innerHTML = '';
+  document.getElementById('modal-hero').style.background = modalColors[id] || '#111';
+  backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  try {
+    const res = await fetch(`${API}/destinations/${id}`);
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message);
+    renderModal(json.data);
+  } catch (err) {
+    // Fallback to local data if server not running
+    const local = getLocalData(id);
+    if (local) renderModal(local);
+    else document.getElementById('modal-content').innerHTML = `<p style="text-align:center;padding:40px;color:var(--text2)">Could not load destination. Please try again.</p>`;
+  }
+}
+
+function renderModal(d) {
+  document.getElementById('modal-emoji').textContent = d.emoji;
+  document.getElementById('modal-name').textContent = d.name;
+  document.getElementById('modal-tagline').textContent = d.tagline;
+  document.getElementById('modal-meta').innerHTML = `
+    <div class="meta-chip">⭐ ${d.rating} rating</div>
+    <div class="meta-chip">📅 ${d.bestTime}</div>
+    <div class="meta-chip">📍 ${d.distance}</div>
+  `;
+
+  const mustPlaces = d.places.filter(p => p.must);
+  const otherPlaces = d.places.filter(p => !p.must);
+  const allPlaces = [...mustPlaces, ...otherPlaces];
+
+  document.getElementById('modal-content').innerHTML = `
+    <h3 class="modal-section-title">Famous <em>Places to Visit</em></h3>
+    <div class="places-grid">
+      ${allPlaces.map(p => `
+        <div class="place-card ${p.must ? 'must-visit' : ''}">
+          <div class="place-top">
+            <div class="place-name">${p.name}${p.must ? '<span class="must-badge">Must Visit</span>' : ''}</div>
+            <span class="place-type">${p.type}</span>
+          </div>
+          <p class="place-desc">${p.desc}</p>
+          <div class="place-info">
+            <span class="pinfo">⏱ <span>${p.time}</span></span>
+            <span class="pinfo">🎫 <span>${p.entry}</span></span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <h3 class="modal-section-title">Available <em>Packages</em></h3>
+    <div class="modal-pkgs">
+      ${d.packages.map(p => `
+        <div class="modal-pkg">
+          <div class="mp-dur">${p.duration}</div>
+          <div class="mp-name">${p.name}</div>
+          <div class="mp-tags">${p.includes.map(i => `<span class="mp-tag">${i}</span>`).join('')}</div>
+          <div class="mp-price">₹${p.price.toLocaleString('en-IN')}</div>
+          <button class="btn-book-pkg" onclick="closeModalDirect();prefillBooking('${p.name}')">Book This Package</button>
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:center;padding-bottom:8px">
+      <button class="btn-gold" style="font-size:13px;padding:13px 32px" onclick="closeModalDirect();prefillBooking('${d.name}')">Plan a Custom Trip to ${d.name} →</button>
+    </div>
+  `;
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+// ── SUBMIT BOOKING (calls backend) ──
+async function submitBooking() {
+  const name = document.getElementById('b-name').value.trim();
+  const phone = document.getElementById('b-phone').value.trim();
+  const email = document.getElementById('b-email').value.trim();
+  const destination = document.getElementById('b-dest').value;
+  const date = document.getElementById('b-date').value;
+  const guests = document.getElementById('b-guests').value;
+  const message = document.getElementById('b-msg').value.trim();
+
+  if (!name || !phone || !destination) {
+    toast('Missing Details', 'Please enter your name, phone number, and destination.');
+    return;
+  }
+  if (!/^[+\d\s\-]{10,}$/.test(phone)) {
+    toast('Invalid Phone', 'Please enter a valid phone number.');
+    return;
+  }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    toast('Invalid Email', 'Please enter a valid email address.');
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Confirming...';
+
+  try {
+    const res = await fetch(`${API}/bookings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, email, destination, date, guests, message })
+    });
+    const json = await res.json();
+    if (json.success) {
+      toast('Booking Confirmed! 🎉', `${json.message}`);
+      // Reset form
+      ['b-name','b-phone','b-email','b-date','b-msg'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('b-dest').value = '';
+    } else {
+      toast('Error', json.message || 'Something went wrong. Please try again.');
+    }
+  } catch {
+    // Fallback if server offline
+    toast('Booking Received! 🎉', `Thank you ${name}! We'll call ${phone} within 30 minutes.`);
+    ['b-name','b-phone','b-date','b-msg'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('b-dest').value = '';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Confirm My Booking →';
+  }
+}
+
+// ── LOCAL FALLBACK DATA (works without server) ──
+function getLocalData(id) {
+  const data = {
+    dehradun: { id:'dehradun', name:'Dehradun', tagline:'Valley of the Doons — Where the Himalayas Begin', emoji:'🌿', rating:4.8, bestTime:'March–June, Sept–Nov', distance:'0 km (city center)',
+      places:[
+        {name:"Robber's Cave",type:"Nature",time:"2–3 hrs",entry:"₹35",desc:"Stunning river cave where you walk through the stream inside limestone gorges. Magical.",must:true},
+        {name:"Forest Research Institute",type:"Heritage",time:"3–4 hrs",entry:"₹50",desc:"Colonial-era heritage building with 6 museums. One of India's most beautiful campuses.",must:true},
+        {name:"Tapkeshwar Temple",type:"Spiritual",time:"1–2 hrs",entry:"Free",desc:"Ancient Shiva temple inside a natural cave with waterfall dripping over the Shivling.",must:true},
+        {name:"Sahastradhara",type:"Nature",time:"2–3 hrs",entry:"₹20",desc:"Sulphur springs with therapeutic properties. Great for a relaxing dip.",must:false},
+        {name:"Mindrolling Monastery",type:"Spiritual",time:"1–2 hrs",entry:"Free",desc:"One of the largest Buddhist centres in India. Stunning Tibetan architecture.",must:false},
+        {name:"Paltan Bazaar",type:"Shopping",time:"2–3 hrs",entry:"Free",desc:"Main market. Best for basmati rice, litchi products, and local handicrafts.",must:false},
+        {name:"Lachhiwala Nature Park",type:"Nature",time:"Half day",entry:"₹30",desc:"Forested picnic spot on the Song river banks. Perfect for families.",must:false},
+        {name:"Clock Tower",type:"Landmark",time:"30 mins",entry:"Free",desc:"Heart of Dehradun city. 6-faced clock tower built in 1953.",must:false}
+      ],
+      packages:[{name:"Doon Day Trip",duration:"1D",price:1499,includes:["AC Cab","Guide","Entry"]},{name:"Doon Weekend",duration:"2D/1N",price:2999,includes:["Hotel","AC Cab","Breakfast","Guide"]},{name:"Doon Explorer",duration:"3D/2N",price:4999,includes:["Hotel","AC Cab","All Meals","Guide","Insurance"]}]
+    },
+    mussoorie: { id:'mussoorie', name:'Mussoorie', tagline:'Queen of the Hills — 2,005m Above Sea Level', emoji:'🏔', rating:4.9, bestTime:'April–June, Dec–Jan', distance:'35 km from Dehradun',
+      places:[
+        {name:"Mall Road",type:"Landmark",time:"2–4 hrs",entry:"Free",desc:"The iconic promenade. Shops, cafes, street food, stunning valley views on both sides.",must:true},
+        {name:"Kempty Falls",type:"Nature",time:"2–3 hrs",entry:"₹50",desc:"Most famous waterfall — 40 feet high. Swim in the natural pool below!",must:true},
+        {name:"Gun Hill",type:"Viewpoint",time:"1–2 hrs",entry:"₹75 ropeway",desc:"Second highest peak. Panoramic Himalayan views — Bandarpunch to Kedarnath.",must:true},
+        {name:"George Everest House",type:"Heritage",time:"2–3 hrs",entry:"₹20",desc:"Ruins of Sir George Everest's home. The man after whom Mt. Everest is named.",must:true},
+        {name:"Lal Tibba",type:"Viewpoint",time:"1–2 hrs",entry:"Free",desc:"Highest point. See Badrinath, Kedarnath peaks on clear days.",must:false},
+        {name:"Cloud's End",type:"Nature",time:"Half day",entry:"₹100",desc:"Where the road ends and the forest begins. Dense oak and rhododendron forest.",must:false},
+        {name:"Landour Bazaar",type:"Shopping",time:"1–2 hrs",entry:"Free",desc:"Old-world part of Mussoorie. Ruskin Bond's home area — quaint, less touristy.",must:false},
+        {name:"Camel's Back Road",type:"Nature",time:"1–2 hrs",entry:"Free",desc:"3km heritage walk past a rock shaped like a camel. Best at sunset.",must:false}
+      ],
+      packages:[{name:"Mussoorie Day Trip",duration:"1D",price:1999,includes:["AC Cab","Guide"]},{name:"Queen's Weekend",duration:"2D/1N",price:4499,includes:["Hotel","AC Cab","Breakfast","Guide"]},{name:"Hill Royale",duration:"3D/2N",price:7999,includes:["Luxury Hotel","AC Cab","All Meals","Guide","Insurance"]}]
+    },
+    haridwar: { id:'haridwar', name:'Haridwar', tagline:'Gateway to the Gods — Where Ganga Meets the Plains', emoji:'🔱', rating:4.9, bestTime:'Oct–March, March–April (festivals)', distance:'54 km from Dehradun',
+      places:[
+        {name:"Har Ki Pauri",type:"Spiritual",time:"2–3 hrs",entry:"Free",desc:"Holiest ghat of Haridwar. The Ganga Aarti at sunset is one of India's most magical experiences.",must:true},
+        {name:"Ganga Aarti (Evening)",type:"Spiritual",time:"1 hr",entry:"Free",desc:"Every evening 6–7pm. Thousands of diyas on the Ganga — bells, chants, fire, pure divinity.",must:true},
+        {name:"Mansa Devi Temple",type:"Spiritual",time:"2–3 hrs",entry:"₹108 ropeway",desc:"Hilltop temple reached by ropeway. Mansa Devi grants wishes — tie a sacred thread.",must:true},
+        {name:"Maya Devi Temple",type:"Spiritual",time:"1 hr",entry:"Free",desc:"One of the Shakti Peethas — ancient and deeply sacred. The heart of Haridwar.",must:true},
+        {name:"Chandi Devi Temple",type:"Spiritual",time:"2–3 hrs",entry:"₹108 ropeway",desc:"Another hilltop temple. Built in 1929 by King of Kashmir. Panoramic valley views.",must:false},
+        {name:"Rajaji National Park",type:"Nature",time:"Half day",entry:"₹800",desc:"Elephant safaris through dense jungle. Spot elephants, leopards, 315 bird species.",must:false},
+        {name:"Bada Bazaar",type:"Shopping",time:"1–2 hrs",entry:"Free",desc:"Brass idols, Ganga jal, rudraksha, handmade souvenirs at great prices.",must:false},
+        {name:"Patanjali Yogpeeth",type:"Wellness",time:"2 hrs",entry:"Free",desc:"Baba Ramdev's yoga institute. Live yoga sessions, buy Ayurvedic products from source.",must:false}
+      ],
+      packages:[{name:"Haridwar Day Trip",duration:"1D",price:1499,includes:["AC Cab","Aarti"]},{name:"Sacred Weekend",duration:"2D/1N",price:3499,includes:["Hotel","AC Cab","All Meals","Aarti"]},{name:"Pilgrimage Special",duration:"4D/3N",price:7999,includes:["Hotel","AC Cab","All Meals","Guide","Puja"]}]
+    },
+    rishikesh: { id:'rishikesh', name:'Rishikesh', tagline:'Yoga Capital of the World — Adventure Meets Spirituality', emoji:'🌊', rating:4.9, bestTime:'Feb–May, Sept–Nov', distance:'43 km from Dehradun',
+      places:[
+        {name:"Laxman Jhula",type:"Landmark",time:"1–2 hrs",entry:"Free",desc:"Iconic iron suspension bridge over Ganga. Legend says Laxman crossed here on jute ropes.",must:true},
+        {name:"River Rafting",type:"Adventure",time:"3–4 hrs",entry:"₹600–2,500",desc:"16–36km routes through Grade 1–4 rapids. Best adrenaline rush in Uttarakhand. March–May best.",must:true},
+        {name:"Bungee Jumping",type:"Adventure",time:"Half day",entry:"₹3,550",desc:"India's highest fixed platform bungee at 83m — Jumpin Heights. Giant swing too.",must:true},
+        {name:"Beatles Ashram",type:"Heritage",time:"2–3 hrs",entry:"₹150",desc:"Where The Beatles stayed in 1968. Stunning graffiti, eerie beauty, incredible history.",must:true},
+        {name:"Parmarth Niketan Aarti",type:"Spiritual",time:"Evening",entry:"Free",desc:"Largest ashram in Rishikesh. Famous sunset Ganga Aarti — more intimate than Haridwar.",must:true},
+        {name:"Ram Jhula",type:"Landmark",time:"1 hr",entry:"Free",desc:"Bigger suspension bridge. Both bridges offer stunning river and mountain views.",must:false},
+        {name:"Triveni Ghat",type:"Spiritual",time:"1–2 hrs",entry:"Free",desc:"Main bathing ghat. Beautiful morning aarti. Three rivers meet here.",must:false},
+        {name:"Neelkanth Mahadev",type:"Spiritual",time:"Half day",entry:"Free",desc:"32km drive through forest. Where Shiva drank the poison. Sacred and scenic.",must:false}
+      ],
+      packages:[{name:"Rishikesh Adventure",duration:"1D",price:2499,includes:["AC Cab","Rafting","Bungee"]},{name:"Yoga & Adventure",duration:"3D/2N",price:5999,includes:["Camp Stay","AC Cab","Rafting","Yoga","All Meals"]},{name:"Complete Rishikesh",duration:"4D/3N",price:8999,includes:["Hotel","AC Cab","All Activities","All Meals","Guide"]}]
+    },
+    chakrata: { id:'chakrata', name:'Chakrata', tagline:"The Hidden Gem — Garhwal's Best Kept Secret", emoji:'⛰', rating:4.7, bestTime:'March–June, Dec–Feb (snow)', distance:'88 km from Dehradun',
+      places:[
+        {name:"Tiger Falls",type:"Nature",time:"Half day",entry:"Free",desc:"India's highest direct waterfall at 312 feet. 5km jungle trek to reach — absolutely worth it.",must:true},
+        {name:"Deoban Forest",type:"Nature",time:"Half day",entry:"Free",desc:"Dense deodar forest at 2,200m. Himalayan views, bird watching, complete silence.",must:true},
+        {name:"Chilmiri Neck",type:"Viewpoint",time:"1–2 hrs",entry:"Free",desc:"360° Himalayan panorama. See Kedarnath to Bandarpunch range on clear days.",must:true},
+        {name:"Mundan Falls",type:"Nature",time:"2–3 hrs",entry:"Free",desc:"Lesser-known waterfall near Chakrata. Beautiful pool, far fewer crowds.",must:false},
+        {name:"Kanda Village",type:"Cultural",time:"2–3 hrs",entry:"Free",desc:"Ancient Jaunsari tribal village. Unique architecture, traditional costumes, century-old temples.",must:false},
+        {name:"Budher Caves",type:"Adventure",time:"Half day",entry:"Free",desc:"Mysterious caves thousands of years old. Some stretch 150m inside the mountain.",must:false}
+      ],
+      packages:[{name:"Chakrata Day Trip",duration:"1D",price:2999,includes:["AC Cab","Guide","Entry"]},{name:"Chakrata Escape",duration:"2D/1N",price:4999,includes:["Camp/Hotel","AC Cab","All Meals","Trek"]},{name:"Doon + Chakrata",duration:"4D/3N",price:8999,includes:["Hotels","AC Cab","All Meals","Guide","Insurance"]}]
+    }
+  };
+  return data[id] || null;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO - Google ke liye -->
+  <title>Ashish Doon Travels - Taxi & Cab Service in Dehradun</title>
+  <meta name="description" content="Ashish Doon Travels - Reliable taxi and cab service in Dehradun. Book outstation trips, local rides, airport transfers. Available 24/7. Call now!" />
+  <meta name="keywords" content="taxi Dehradun, cab service Dehradun, outstation taxi, airport transfer Dehradun, Ashish Doon Travels, Mussoorie taxi" />
+  <meta name="author" content="Ashish Doon Travels" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-icon">🚖</span>
+      <div>
+        <span class="logo-name">Ashish Doon Travels</span>
+        <span class="logo-sub">Dehradun</span>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#routes">Routes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="tel:+919999999999" class="btn-call">📞 Call Now</a>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="home">
+    <div class="hero-text">
+      <p class="hero-tag">Dehradun's Trusted Taxi Service</p>
+      <h1>Travel Safely.<br/>Travel Comfortably.</h1>
+      <p class="hero-desc">Local & outstation trips, airport pickups, Mussoorie tours — all at the best rates. Available 24/7.</p>
+      <div class="hero-btns">
+        <a href="tel:+919999999999" class="btn-primary">Book a Ride Now</a>
+        <a href="https://wa.me/919999999999" class="btn-whatsapp" target="_blank">WhatsApp Us</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>Quick Booking</h3>
+      <div class="form-group">
+        <label>From</label>
+        <input type="text" placeholder="Pickup location" id="from" />
+      </div>
+      <div class="form-group">
+        <label>To</label>
+        <input type="text" placeholder="Destination" id="to" />
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="tdate" />
+      </div>
+      <div class="form-group">
+        <label>Trip Type</label>
+        <select id="trip-type">
+          <option>One Way</option>
+          <option>Round Trip</option>
+          <option>Local (4hr/40km)</option>
+          <option>Airport Transfer</option>
+        </select>
+      </div>
+      <button class="btn-primary w-full" onclick="bookNow()">Get Quote on WhatsApp</button>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">1200+</span><span class="stat-label">Happy Customers</span></div>
+    <div class="stat"><span class="stat-num">8+</span><span class="stat-label">Years Experience</span></div>
+    <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Available</span></div>
+    <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Routes Covered</span></div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <p class="section-tag">What We Offer</p>
+    <h2 class="section-title">Our Services</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🏙️</div>
+        <h3>Local City Rides</h3>
+        <p>Dehradun local taxi for hourly or point-to-point travel within the city.</p>
+        <span class="service-price">Starting ₹300</span>
+      </div>
+      <div class="service-card highlight">
+        <div class="service-icon">🛣️</div>
+        <h3>Outstation Trips</h3>
+        <p>Haridwar, Rishikesh, Delhi, Agra, Nainital — comfortable AC cabs.</p>
+        <span class="service-price">Starting ₹12/km</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">✈️</div>
+        <h3>Airport Transfers</h3>
+        <p>Jolly Grant Airport pickup & drop. On-time guaranteed, flight tracking included.</p>
+        <span class="service-price">Starting ₹600</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏔️</div>
+        <h3>Mussoorie Tour</h3>
+        <p>Full-day Mussoorie sightseeing with experienced driver-guide.</p>
+        <span class="service-price">Starting ₹1800</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🕌</div>
+        <h3>Char Dham Yatra</h3>
+        <p>Kedarnath, Badrinath, Gangotri, Yamunotri — complete pilgrimage packages.</p>
+        <span class="service-price">Call for price</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">👰</div>
+        <h3>Wedding & Events</h3>
+        <p>Decorated car for baraat, wedding functions, and special occasions.</p>
+        <span class="service-price">Call for price</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROUTES -->
+  <section class="section routes-section" id="routes">
+    <p class="section-tag">Popular Routes</p>
+    <h2 class="section-title">Where We Go</h2>
+    <div class="routes-grid">
+      <div class="route-card"><span class="route-from">Dehradun</span><span class="route-arrow">→</span><span class="route-to">Haridwar</span><span class="route-price">₹800</span></div>
+      <div class="route-card"><span class="route-from">Dehradun</span><span class="route-arrow">→</span><span class="route-to">Rishikesh</span><span class="route-price">₹700</span></div>
+      <div class="route-card"><span class="route-from">Dehradun</span><span class="route-arrow">→</span><span class="route-to">Delhi</span><span class="route-price">₹2800</span></div>
+      <div class="route-card"><span class="route-from">Dehradun</span><span class="route-arrow">→</span><span class="route-to">Mussoorie</span><span class="route-price">₹1200</span></div>
+      <div class="route-card"><span class="route-from">Dehradun</span><span class="route-arrow">→</span><span class="route-to">Nainital</span><span class="route-price">₹3200</span></div>
+      <div class="route-card"><span class="route-from">Dehradun</span><span class="route-arrow">→</span><span class="route-to">Chandigarh</span><span class="route-price">₹2200</span></div>
+    </div>
+    <p class="routes-note">* Prices are for one-way, Sedan car. AC included. Toll & parking extra.</p>
+  </section>
+
+  <!-- WHY US -->
+  <section class="section why-section">
+    <p class="section-tag">Why Choose Us</p>
+    <h2 class="section-title">The Ashish Doon Promise</h2>
+    <div class="why-grid">
+      <div class="why-item"><span>✅</span><div><h4>Verified Drivers</h4><p>All drivers are police-verified with valid license.</p></div></div>
+      <div class="why-item"><span>✅</span><div><h4>Clean AC Cars</h4><p>Well-maintained Sedan, SUV, and Tempo Traveller fleet.</p></div></div>
+      <div class="why-item"><span>✅</span><div><h4>Fixed Prices</h4><p>No hidden charges. Price decided before trip starts.</p></div></div>
+      <div class="why-item"><span>✅</span><div><h4>On-Time Pickup</h4><p>We value your time. Always on time, every time.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section contact-section" id="contact">
+    <p class="section-tag">Get In Touch</p>
+    <h2 class="section-title">Contact Us</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="contact-icon">📞</span>
+          <div>
+            <h4>Call / WhatsApp</h4>
+            <a href="tel:+919999999999">+91 99999 99999</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📍</span>
+          <div>
+            <h4>Based In</h4>
+            <p>Dehradun, Uttarakhand</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🕐</span>
+          <div>
+            <h4>Availability</h4>
+            <p>24 hours, 7 days a week</p>
+          </div>
+        </div>
+        <a href="https://wa.me/919999999999" class="btn-whatsapp big" target="_blank">Chat on WhatsApp</a>
+      </div>
+      <form class="contact-form" onsubmit="submitForm(event)">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Ramesh Kumar" id="cf-name" required />
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+91 98765 43210" id="cf-phone" required />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="I need a cab from Dehradun to Rishikesh on 25th March..." id="cf-msg" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn-primary w-full">Send via WhatsApp</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div>
+        <div class="logo" style="margin-bottom:8px">
+          <span class="logo-icon">🚖</span>
+          <div>
+            <span class="logo-name">Ashish Doon Travels</span>
+            <span class="logo-sub">Dehradun, Uttarakhand</span>
+          </div>
+        </div>
+        <p>Your trusted travel partner in the Doon Valley since 2016.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#routes">Routes</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Popular Routes</h4>
+        <ul>
+          <li>Dehradun → Delhi</li>
+          <li>Dehradun → Haridwar</li>
+          <li>Dehradun → Mussoorie</li>
+          <li>Char Dham Yatra</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Ashish Doon Travels. All rights reserved.</p>
+      <p>Designed with ❤️ for Dehradun</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
