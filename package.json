@@ -8,6 +8,8 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "@maptiler/client": "^2.7.0",
+    "@maptiler/sdk": "^3.11.1",
     "cors": "^2.8.5",
     "express": "^4.18.2"
   },

@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "Mussoorie",
+    "lat": 30.4599,
+    "lng": 78.0664,
+    "description": "The Queen of Hills"
+  },
+  {
+    "id": 2,
+    "name": "Rishikesh",
+    "lat": 30.0869,
+    "lng": 78.2676,
+    "description": "Yoga Capital & Adventure Hub"
+  },
+  {
+    "id": 3,
+    "name": "Haridwar",
+    "lat": 29.9457,
+    "lng": 78.1642,
+    "description": "Gateway to Gods"
+  },
+  {
+    "id": 4,
+    "name": "Chakrata",
+    "lat": 30.7016,
+    "lng": 77.8696,
+    "description": "Peaceful Cantonment Town"
+  },
+  {
+    "id": 5,
+    "name": "Dhanaulti",
+    "lat": 30.4035,
+    "lng": 78.2435,
+    "description": "Serene Hill Station"
+  }
+]
