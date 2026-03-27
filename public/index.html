@@ -6,6 +6,7 @@
 <title>Ashish Doon Travels — Travel Safely & Comfortably</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Cormorant+Garamond:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
 /* ─────────────────────────────────────────
    TOKENS & THEME
@@ -357,6 +358,36 @@ footer { padding:72px 56px 40px; border-top:1px solid var(--gold-border); }
   .modal-body { padding:24px; }
   .modal-hero { padding:32px 24px 24px; }
   .f-row { grid-template-columns:1fr; }
+}
+/* WhatsApp Float Button */
+.whatsapp-float {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  background: #25D366;
+  color: #fff !important;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 13px 22px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  box-shadow: 0 4px 24px rgba(37,211,102,0.45);
+  transition: all 0.3s;
+  animation: waPop 0.6s 1s both;
+}
+.whatsapp-float:hover {
+  background: #1ebe59;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(37,211,102,0.55);
+}
+@keyframes waPop {
+  from { opacity:0; transform:translateY(20px) scale(0.85); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
 }
 </style>
 </head>
