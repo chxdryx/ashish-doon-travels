@@ -729,6 +729,121 @@ footer { padding:72px 56px 40px; border-top:1px solid var(--gold-border); }
 </footer>
 
 <script>
+  // ── DESTINATION COORDINATES ──
+const destCoords = {
+  dehradun:  { lat: 30.3165, lng: 78.0322 },
+  mussoorie: { lat: 30.4598, lng: 78.0644 },
+  haridwar:  { lat: 29.9457, lng: 78.1642 },
+  rishikesh: { lat: 30.0869, lng: 78.2676 },
+  chakrata:  { lat: 30.7016, lng: 77.8696 }
+};
+
+const MAPTILER_KEY = 'CVP0ZS2XmirwdZIU9VUA';
+
+async function showDistanceInModal(destId) {
+  const distSection = document.getElementById('dist-section');
+  const distStatus  = document.getElementById('dist-status');
+  const distKm      = document.getElementById('dist-km');
+  const distCar     = document.getElementById('dist-car');
+  const distBike    = document.getElementById('dist-bike');
+  const distTrain   = document.getElementById('dist-train');
+
+  // Pehle section dikhao
+  distSection.style.display = 'block';
+  distStatus.textContent = '📍 Aapki location dhundh rahe hain...';
+  distKm.textContent = '';
+  distCar.innerHTML = '';
+  distBike.innerHTML = '';
+  distTrain.innerHTML = '';
+
+  const dest = destCoords[destId];
+  if (!dest) {
+    distStatus.textContent = 'Destination coordinates nahi mile.';
+    return;
+  }
+
+  // Step 1: GPS try karo
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => fetchAndShowRoute(pos.coords.latitude, pos.coords.longitude, dest, distStatus, distKm, distCar, distBike, distTrain),
+      async () => {
+        // Step 2: GPS denied — IP fallback
+        distStatus.textContent = '📡 IP se approximate location le rahe hain...';
+        try {
+          const ipRes = await fetch('https://ipapi.co/json/');
+          const ipData = await ipRes.json();
+          if (ipData.latitude) {
+            fetchAndShowRoute(ipData.latitude, ipData.longitude, dest, distStatus, distKm, distCar, distBike, distTrain);
+          } else {
+            showDeharadunFallback(destId, distStatus, distKm, distCar, distBike, distTrain);
+          }
+        } catch {
+          showDeharadunFallback(destId, distStatus, distKm, distCar, distBike, distTrain);
+        }
+      },
+      { timeout: 8000 }
+    );
+  } else {
+    showDeharadunFallback(destId, distStatus, distKm, distCar, distBike, distTrain);
+  }
+}
+
+async function fetchAndShowRoute(userLat, userLng, dest, distStatus, distKm, distCar, distBike, distTrain) {
+  distStatus.textContent = '🗺️ Route calculate ho raha hai...';
+  try {
+    const url = `https://api.maptiler.com/navigation/routing/v2/driving/${userLng},${userLat};${dest.lng},${dest.lat}?key=${MAPTILER_KEY}&alternatives=false&geometries=geojson`;
+    const res  = await fetch(url);
+    const data = await res.json();
+
+    if (data.routes && data.routes.length > 0) {
+      const km  = Math.round(data.routes[0].distance / 1000);
+      const min = Math.round(data.routes[0].duration / 60);
+      const hrs = Math.floor(min / 60);
+      const rem = min % 60;
+      const timeStr = hrs > 0 ? `${hrs} hr ${rem} min` : `${min} min`;
+
+      distStatus.textContent = 'Aapki current location se road distance:';
+      distKm.textContent     = `${km} km`;
+      distCar.innerHTML      = `🚗 <strong>Car (Road):</strong> ~${timeStr}`;
+      distBike.innerHTML     = `🏍️ <strong>Bike:</strong> ~${Math.round(min * 1.15)} min estimated`;
+      distTrain.innerHTML    = `✈️ <strong>Nearest Airport:</strong> Jolly Grant, Dehradun (DED)`;
+    } else {
+      distStatus.textContent = 'Route nahi mila. Server side issue ho sakta hai.';
+    }
+  } catch (err) {
+    distStatus.textContent = 'Distance fetch mein error aaya. Network check karo.';
+    console.error('Route fetch error:', err);
+  }
+}
+
+function showDeharadunFallback(destId, distStatus, distKm, distCar, distBike, distTrain) {
+  // Dehradun se hardcoded distances — jab location na mile
+  const fromDoon = {
+    dehradun:  { km: 0,   time: 'City Center' },
+    mussoorie: { km: 35,  time: '1 hr 15 min' },
+    haridwar:  { km: 54,  time: '1 hr 30 min' },
+    rishikesh: { km: 43,  time: '1 hr 15 min' },
+    chakrata:  { km: 88,  time: '2 hr 30 min' }
+  };
+  const d = fromDoon[destId] || { km: '—', time: '—' };
+  distStatus.textContent = 'Location nahi mili — Dehradun se distance dikh raha hai:';
+  distKm.textContent     = d.km > 0 ? `${d.km} km` : 'Dehradun (City)';
+  distCar.innerHTML      = `🚗 <strong>Car se:</strong> ~${d.time}`;
+  distBike.innerHTML     = `🏍️ <strong>Bike se:</strong> thoda zyada time`;
+  distTrain.innerHTML    = `✈️ <strong>Nearest Airport:</strong> Jolly Grant, Dehradun (DED)`;
+}
+```
+
+
+
+---
+
+### Step 4 — Render Environment Variable set karo
+
+Render Dashboard → ashish-doon-travels → **Environment** tab:
+```
+Key:   MAPTILER_KEY
+Value: CVP0ZS2XmirwdZIU9VUA
 // ── CONFIG ──
 // When running locally: const API = 'http://localhost:3000/api'
 // When deployed:        const API = '/api'
@@ -1145,8 +1260,5 @@ function toast(title, msg) {
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 4000);
 }
-<script src="script.js"></script>
-<div id="root"></div>
-<script type="module" src="./src/main.jsx"></script>
 </body>
 </html>

@@ -142,3 +142,4 @@ window.closeModalDirect = closeModalDirect;
 window.closeModal = closeModal;
 window.bookNow = bookNow;
 window.scrollTo = scrollTo;
+const apiKey = import.meta.env.VITE_ORS_API_KEY;
